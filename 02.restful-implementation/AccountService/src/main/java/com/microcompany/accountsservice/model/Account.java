@@ -1,8 +1,12 @@
 package com.microcompany.accountsservice.model;
 
-import javax.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
@@ -17,6 +21,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //@Column(name = "tipo") // Ahorro o corriente
     private String type;
 
     @DateTimeFormat
@@ -28,6 +33,5 @@ public class Account {
 
     @Transient
     Customer owner;
-
 
 }

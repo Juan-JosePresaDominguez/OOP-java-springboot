@@ -48,7 +48,7 @@ public class ProductServiceController {
         logger.info("newProducto:" + newProduct);
         return repo.save(newProduct);
     }*/
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @PostMapping("")
     public ResponseEntity<Product> save(@RequestBody Product newProduct) {
         logger.info("newProducto:" + newProduct);
         return new ResponseEntity<>(repo.save(newProduct), HttpStatus.CREATED);
@@ -61,7 +61,7 @@ public class ProductServiceController {
 //    }
 
     // Método GET - getOne() que escucha una ruta concreta
-    @RequestMapping(value = "/{pid}", method = RequestMethod.GET)
+    @GetMapping("/{pid}")
     public Product getOne(@PathVariable("pid") Long id) {
         return repo.findById(id).get();
     }
@@ -71,7 +71,7 @@ public class ProductServiceController {
     public void deleteProduct(@PathVariable("pid") Long id) {
         repo.deleteById(id);
     }*/
-    @RequestMapping(value = "/{pid}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{pid}")
     public ResponseEntity deleteProduct(@PathVariable("pid") Long id) {
         repo.deleteById(id);
         return ResponseEntity.noContent().build();
