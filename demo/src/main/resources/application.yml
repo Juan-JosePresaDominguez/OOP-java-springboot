@@ -1,0 +1,64 @@
+#server.port: 9090
+#spring:
+#  application.name: demoservice
+#datos.nombre: Juanjo
+
+spring:
+  application.name: demoservice
+  profiles.active: dev
+  #profiles.active: prod
+
+  server:
+    port: 8080
+
+#datos.nombre: Juanjo
+#spring.profiles.active: dev
+datos.nombre: Nombre por defecto
+
+logging:
+  #file.path: C:/tmp/logs/         # Genera spring.log
+  #file.name: C:/tmp/logs/my.log   # Ruta + nombre de fichero
+  level:
+    #root: DEBUG
+    #root: WARN
+    org.springframework.web: INFO
+    org.hibernate: ERROR
+
+---
+spring:
+  profiles: dev
+  application:
+    name: demoservice-dev
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console.enabled: true
+
+server:
+  port: 9090
+
+datos.nombre: DevNombre
+
+#logging.level.root: DEBUG
+#logging:
+#  level:
+#    root: DEBUG
+
+---
+spring:
+  profiles: prod
+  application:
+    name: demoservice-prod
+
+server.port: 4431
+
+datos.nombre: ProdNombre
+
+logging:
+  level:
+    root: WARN
