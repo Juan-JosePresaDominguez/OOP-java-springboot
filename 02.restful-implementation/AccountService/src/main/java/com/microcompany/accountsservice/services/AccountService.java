@@ -48,13 +48,14 @@ public class AccountService implements IAccountService {
     public Account updateAccount(Long id, Account account) {
         Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
         newAccount.setType(account.getType());
+        newAccount.setBalance(account.getBalance());
         return accountRepository.save(newAccount);
     }
 
     @Override
     public Account addBalance(Long id, int amount, Long ownerId) {
         Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
-        Customer owner = null;// Will be gotten from user service
+        Customer owner = null;// Will be gotten from user service (Se obtendrá del servicio de usuario)
         int newBalance = newAccount.getBalance() + amount;
         newAccount.setBalance(newBalance);
         return accountRepository.save(newAccount);
@@ -63,7 +64,7 @@ public class AccountService implements IAccountService {
     @Override
     public Account withdrawBalance(Long id, int amount, Long ownerId) {
         Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
-        Customer owner = null; // Will be gotten from user service
+        Customer owner = null; // Will be gotten from user service (Se obtendrá del servicio de usuario)
         int newBalance = newAccount.getBalance() - amount;
         newAccount.setBalance(newBalance);
         return accountRepository.save(newAccount);

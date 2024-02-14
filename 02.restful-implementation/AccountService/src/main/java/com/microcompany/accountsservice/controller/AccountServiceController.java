@@ -1,6 +1,8 @@
 package com.microcompany.accountsservice.controller;
 
+import com.microcompany.accountsservice.exception.GlobalException;
 import com.microcompany.accountsservice.model.Account;
+import com.microcompany.accountsservice.payload.ApiResponse;
 import com.microcompany.accountsservice.persistence.AccountRepository;
 import com.microcompany.accountsservice.services.AccountService;
 import org.slf4j.Logger;
@@ -68,9 +70,44 @@ public class AccountServiceController {
         //return new ResponseEntity<>(repo.findByOwnerId(ownerId), HttpStatus.ACCEPTED); // HTTP 202 Accepted
     }
 
+    // Método PUT (Actualizar Cuenta por ID y Account 'updateAccount' - SERVICIO)
+    // Cuando queremos actualizar un recurso, hay que indicar el recurso que queremos actualizar
+    @RequestMapping(value = "/{aid}", method = RequestMethod.PUT)
+    public Account updateAccount(@PathVariable("aid") Long id, @RequestBody Account cuenta) {
+        if (id == cuenta.getId()) return service.updateAccount(id, cuenta);
+        else throw new RuntimeException();
+    }
+
+    // Método PUT (Añadir Saldo por ID + Cantidad + OwnerId Account 'addBalance' - SERVICIO)
+    @PutMapping("/addBalance/{aid}/{sdo}/{own}")
+    public ResponseEntity<Account> addBalance(
+            @PathVariable("aid") Long id,
+            @PathVariable("sdo") int saldo,
+            @PathVariable("own") Long ownerId,
+            @RequestBody Account cuenta) {
+        if (id == cuenta.getId())
+            return new ResponseEntity<>(service.addBalance(id, saldo, ownerId), HttpStatus.ACCEPTED);
+        else throw new GlobalException(id);
+        /*else {
+            return new ResponseEntity<>(new ApiResponse("Id y product.id deben coincidir", HttpStatus.PRECONDITION_FAILED.is4xxClientError()), HttpStatus.PRECONDITION_FAILED);
+        }*/
+    }
+
+    // Método PUT (Retirar Saldo por ID + Cantidad + OwnerId Account 'withdrawBalance' - SERVICIO)
+    @PutMapping("/withdrawBalance/{aid}/{sdo}/{own}")
+    public ResponseEntity<Account> withdrawBalance(
+            @PathVariable("aid") Long id,
+            @PathVariable("sdo") int saldo,
+            @PathVariable("own") Long ownerId,
+            @RequestBody Account cuenta) {
+        if (id == cuenta.getId())
+            return new ResponseEntity<>(service.withdrawBalance(id, saldo, ownerId), HttpStatus.ACCEPTED);
+        else throw new GlobalException(id);
+    }
+
     // Método DELETE (Borrar Cuenta por ID 'delete' - SERVICIO)
-    @RequestMapping(value = "/{pid}", method = RequestMethod.DELETE)
-    /*public void delete(@PathVariable("pid") Long id) {
+    /*@RequestMapping(value = "/{pid}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("pid") Long id) {
         service.delete(id); // HTTP 200 OK
         //repo.deleteById(id); // HTTP 200 OK
     }*/
@@ -79,6 +116,15 @@ public class AccountServiceController {
         service.delete(id); // HTTP 204 No Content
         //repo.deleteById(id); // HTTP 204 No Content
         return ResponseEntity.noContent().build();
+    }
+
+    // Método DELETE (Borrar Cuenta por ID 'delete' - SERVICIO) HTTP 200/204 vs. 404
+    @DeleteMapping(value = "/notfound/{pid}")
+    public ResponseEntity<Void> deleteNotFound(@PathVariable("pid") Long id) {
+        service.delete(id); // HTTP 204 No Content
+        //repo.deleteById(id); // HTTP 204 No Content
+        return ResponseEntity.noContent().build();
+        //new ResponseEntity<>(service.delete(id), HttpStatus.NOT_FOUND); // HTTP 404 Not Found
     }
 
     // Método DELETE (Borrar Cuenta por Owner 'deleteAccountsUsingOwnerId' - SERVICIO)
