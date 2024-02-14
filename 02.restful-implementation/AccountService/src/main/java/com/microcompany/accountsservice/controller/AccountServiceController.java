@@ -29,7 +29,7 @@ public class AccountServiceController {
     // Método POST (Crear Cuenta 'create' - SERVICIO)
     @PostMapping("")
     public ResponseEntity<Account> create(@RequestBody Account newAccount) {
-        return new ResponseEntity<>(service.create(newAccount), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.create(newAccount), HttpStatus.CREATED); // HTTP 201 Created
     }
     // Método POST (Crear Cuenta 'save' - REPOSITORIO)
     /*@PostMapping("")
@@ -40,25 +40,54 @@ public class AccountServiceController {
 
     // Método GET (Obtener Cuentas 'getAccounts' - SERVICIO)
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Account> getAccounts() {
+    /*public List<Account> getAccounts() {
         return service.getAccounts();
         //return repo.findAll();
+    }*/
+    public ResponseEntity<List<Account>> getAccounts() {
+        return new ResponseEntity<>(service.getAccounts(), HttpStatus.OK);
     }
 
     // Método GET (Obtener Cuenta por ID 'getAccount' - SERVICIO)
     @GetMapping("/{aid}")
-    public Account getAccount(@PathVariable("aid") Long id) {
-        return service.getAccount(id);
+    /*public Account getAccount(@PathVariable("aid") Long id) {
+        return service.getAccount(id); // HTTP 200
+    }*/
+    public ResponseEntity<Account> getAccount(@PathVariable("aid") Long id) {
+        return new ResponseEntity<>(service.getAccount(id), HttpStatus.OK); // HTTP 200
     }
 
     // Método GET (Obtener Cuenta por Owner 'getAccountByOwnerId' - SERVICIO)
-    @GetMapping("/{oid}")
-    public List<Account> getAccountByOwnerId(@PathVariable("oid") Long ownerId) {
-        return service.getAccountByOwnerId(ownerId);
-        //return repo.findByOwnerId(1L);
+    @GetMapping("/owner/{oid}")
+    /*public List<Account> getAccountByOwnerId(@PathVariable("oid") Long ownerId) {
+        return service.getAccountByOwnerId(ownerId); // HTTP 200 OK
+        //return repo.findByOwnerId(ownerId); // HTTP 200 OK
+    }*/
+    public ResponseEntity<List<Account>> getAccountByOwnerId(@PathVariable("oid") Long ownerId) {
+        return new ResponseEntity<>(service.getAccountByOwnerId(ownerId), HttpStatus.ACCEPTED); // HTTP 202 Accepted
+        //return new ResponseEntity<>(repo.findByOwnerId(ownerId), HttpStatus.ACCEPTED); // HTTP 202 Accepted
     }
 
+    // Método DELETE (Borrar Cuenta por ID 'delete' - SERVICIO)
+    @RequestMapping(value = "/{pid}", method = RequestMethod.DELETE)
+    /*public void delete(@PathVariable("pid") Long id) {
+        service.delete(id); // HTTP 200 OK
+        //repo.deleteById(id); // HTTP 200 OK
+    }*/
+    @DeleteMapping(value = "/{pid}")
+    public ResponseEntity delete(@PathVariable("pid") Long id) {
+        service.delete(id); // HTTP 204 No Content
+        //repo.deleteById(id); // HTTP 204 No Content
+        return ResponseEntity.noContent().build();
+    }
 
+    // Método DELETE (Borrar Cuenta por Owner 'deleteAccountsUsingOwnerId' - SERVICIO)
+    @DeleteMapping(value = "/owner/{pid}")
+    public ResponseEntity deleteAccountsUsingOwnerId(@PathVariable("pid") Long id) {
+        service.deleteAccountsUsingOwnerId(id); // HTTP 204 No Content
+        //repo.deleteById(id); // HTTP 204 No Content
+        return ResponseEntity.noContent().build();
+    }
 
 
 

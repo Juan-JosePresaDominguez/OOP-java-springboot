@@ -25,7 +25,8 @@ spring:
     url: "jdbc:h2:mem:acountsdb"
     driverClassName: org.h2.Driver
     username: sa
-    password: password
+    #Si dejamos comentado el password, no es necesario para loguearse en BB.DD. H2
+    #password: password
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
