@@ -1,5 +1,6 @@
 package com.microcompany.productsservice.controller;
 
+import com.microcompany.productsservice.exception.ProductNotfoundException;
 import com.microcompany.productsservice.model.Product;
 import com.microcompany.productsservice.model.StatusMessage;
 import com.microcompany.productsservice.persistence.ProductsRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,10 +38,19 @@ public class ProductServiceController {
     }*/
 
     // RESPONSE
-    @GetMapping("")
+    /*@GetMapping("")
     public ResponseEntity<List<Product>> getAll() {
         //return repo.findAll();
         return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
+    }*/
+
+    // Método GET - getAll() - NO HAPPY PATH
+    @GetMapping("")
+    public ResponseEntity<List<Product>> getAll() {
+        List<Product> products = repo.findAll();
+        if (products != null && products.size() > 0) return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
+        //else return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else throw new ProductNotfoundException("La lista de productos está vacía");
     }
 
     // Método POST
@@ -49,7 +60,7 @@ public class ProductServiceController {
         return repo.save(newProduct);
     }*/
     @PostMapping("")
-    public ResponseEntity<Product> save(@RequestBody Product newProduct) {
+    public ResponseEntity<Product> save(@RequestBody @Valid Product newProduct) {
         logger.info("newProducto:" + newProduct);
         return new ResponseEntity<>(repo.save(newProduct), HttpStatus.CREATED);
     }
