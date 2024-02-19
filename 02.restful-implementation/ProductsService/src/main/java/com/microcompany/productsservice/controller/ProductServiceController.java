@@ -10,15 +10,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@Validated
 public class ProductServiceController {
     private static final Logger logger = LoggerFactory.getLogger(ProductServiceController.class);
 
@@ -79,11 +82,11 @@ public class ProductServiceController {
 
     // Método DELETE
     /*@RequestMapping(value = "/{pid}", method = RequestMethod.DELETE)
-    public void deleteProduct(@PathVariable("pid") Long id) {
+    public void delete(@PathVariable("pid") Long id) {
         repo.deleteById(id);
     }*/
     @DeleteMapping(value = "/{pid}")
-    public ResponseEntity deleteProduct(@PathVariable("pid") Long id) {
+    public ResponseEntity delete(@PathVariable("pid") @Min(1) Long id) {
         repo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -96,7 +99,7 @@ public class ProductServiceController {
         else throw new RuntimeException();
     }*/
     @PutMapping("/{pid}")
-    public ResponseEntity<Object> update(@PathVariable("pid") Long id, @RequestBody Product product) {
+    public ResponseEntity<Object> update(@PathVariable("pid") @Min(1) Long id, @RequestBody Product product) {
         if (id == product.getId())
             return new ResponseEntity<>(repo.save(product), HttpStatus.ACCEPTED);
         else {
@@ -106,7 +109,7 @@ public class ProductServiceController {
 
     // Servicio duplicarProducto (POST)
     @PostMapping(value = "/duplicarProducto/{pid}")
-    public ResponseEntity<Product> duplicate(@PathVariable Long pid) {
+    public ResponseEntity<Product> duplicate(@PathVariable @Min(1) Long pid) {
         Product currProd = repo.findById(pid).get();
         Product newProduct = new Product(null, currProd.getName(), currProd.getSerial());
         return new ResponseEntity<>(repo.save(newProduct), HttpStatus.CREATED);
