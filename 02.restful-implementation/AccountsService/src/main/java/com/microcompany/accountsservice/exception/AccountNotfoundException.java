@@ -10,4 +10,8 @@ public class AccountNotfoundException extends GlobalException {
     public AccountNotfoundException(Long accountId) {
         super("Account with id: " + accountId + " not found");
     }
+
+    public AccountNotfoundException(String message) {
+        super(message);
+    }
 }

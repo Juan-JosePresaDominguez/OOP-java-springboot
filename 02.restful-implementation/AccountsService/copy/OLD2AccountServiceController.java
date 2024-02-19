@@ -28,7 +28,7 @@ public class AccountServiceController {
     public ResponseEntity getAccount() {
         List<Account> accs = accountService.getAccounts();
         if (accs != null && accs.size() > 0) return ResponseEntity.status(HttpStatus.OK).body(accs);
-        else throw new AccountNotfoundException("Lista vacía");
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Vacio", false));
     }
 
     @PostMapping("")
@@ -46,7 +46,8 @@ public class AccountServiceController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id));
         } catch (AccountNotfoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new AccountNotfoundException("La lista de productos está vacía");
         }
     }
 
@@ -74,7 +75,7 @@ public class AccountServiceController {
     @PutMapping("/addmoney/{id}")
     public ResponseEntity<Account> addMoney(
             @PathVariable @Min(1) Long id,
-            @RequestBody @Valid MoneyForOwner moneyForOwner
+            @RequestBody MoneyForOwner moneyForOwner
     ) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(accountService.addBalance(id, moneyForOwner.getAmount(), moneyForOwner.getOwnerId()));
     }
@@ -91,7 +92,7 @@ public class AccountServiceController {
     @PutMapping("/withdraw/{id}")
     public ResponseEntity<Account> withdraw(
             @PathVariable @Min(1) Long id,
-            @RequestBody @Valid MoneyForOwner moneyForOwner
+            @RequestBody MoneyForOwner moneyForOwner
     ) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(accountService.withdrawBalance(id, moneyForOwner.getAmount(), moneyForOwner.getOwnerId()));
     }

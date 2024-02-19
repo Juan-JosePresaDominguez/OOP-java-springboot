@@ -10,6 +10,7 @@ public class GlobalException extends RuntimeException {
     public GlobalException(String message) {
         super(message);
     }
+
     public GlobalException(Long id) {
         super("GlobalException for element with id: " + id);
     }
