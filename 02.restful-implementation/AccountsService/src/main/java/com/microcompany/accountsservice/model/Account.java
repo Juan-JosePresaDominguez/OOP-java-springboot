@@ -33,7 +33,7 @@ public class Account {
     private Long ownerId;
 
     @Transient
-    @JsonIgnore
+    @JsonIgnore // Hace que no aparezca el campo anotado con @Transient en las peticiones RESTer
     Customer owner;
 
 }
