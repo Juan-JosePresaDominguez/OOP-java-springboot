@@ -1,5 +1,6 @@
 package com.microcompany.accountsservice.controller;
 
+import com.microcompany.accountsservice.exception.AccountNotfoundException;
 import com.microcompany.accountsservice.exception.GlobalException;
 import com.microcompany.accountsservice.model.Account;
 import com.microcompany.accountsservice.payload.ApiResponse;
@@ -31,7 +32,8 @@ public class AccountServiceController {
     // Método POST (Crear Cuenta 'create' - SERVICIO)
     @PostMapping("")
     public ResponseEntity<Account> create(@RequestBody Account newAccount) {
-        return new ResponseEntity<>(service.create(newAccount), HttpStatus.CREATED); // HTTP 201 Created
+        //return new ResponseEntity<>(service.create(newAccount), HttpStatus.CREATED); // HTTP 201 Created
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(newAccount));
     }
     // Método POST (Crear Cuenta 'save' - REPOSITORIO)
     /*@PostMapping("")
@@ -50,13 +52,27 @@ public class AccountServiceController {
         return new ResponseEntity<>(service.getAccounts(), HttpStatus.OK);
     }
 
+    @GetMapping("/getAccountsRicardo")
+    public ResponseEntity getAccountsRicardo() {
+        List<Account> accs = service.getAccounts();
+        if (accs != null && accs.size() > 0) return ResponseEntity.status(HttpStatus.OK).body(accs);
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Vacio", false));
+    }
+
     // Método GET (Obtener Cuenta por ID 'getAccount' - SERVICIO)
     @GetMapping("/{aid}")
     /*public Account getAccount(@PathVariable("aid") Long id) {
         return service.getAccount(id); // HTTP 200
     }*/
-    public ResponseEntity<Account> getAccount(@PathVariable("aid") Long id) {
+    /*public ResponseEntity<Account> getAccount(@PathVariable("aid") Long id) {
         return new ResponseEntity<>(service.getAccount(id), HttpStatus.OK); // HTTP 200
+    }*/
+    public ResponseEntity<Account> getAccount(@PathVariable("aid") Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(service.getAccount(id)); // HTTP 200
+        } catch (AccountNotfoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     // Método GET (Obtener Cuenta por Owner 'getAccountByOwnerId' - SERVICIO)
@@ -135,6 +151,13 @@ public class AccountServiceController {
         return ResponseEntity.noContent().build();
     }
 
-
+    // Método DELETE (Borrar Todas las Cuentas 'deleteAll' - SERVICIO)
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    //@DeleteMapping(value = "")
+    public ResponseEntity deleteAll() {
+        service.deleteAll(); // HTTP 204 No Content
+        //repo.deleteAll(); // HTTP 204 No Content
+        return ResponseEntity.noContent().build();
+    }
 
 }

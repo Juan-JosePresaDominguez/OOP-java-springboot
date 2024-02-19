@@ -84,5 +84,9 @@ public class AccountService implements IAccountService {
         }
     }
 
+    @Override
+    public void deleteAll() {
+        this.accountRepository.deleteAll();
+    }
 
 }

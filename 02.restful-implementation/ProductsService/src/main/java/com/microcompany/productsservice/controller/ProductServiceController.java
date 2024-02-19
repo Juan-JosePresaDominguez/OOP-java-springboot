@@ -26,7 +26,7 @@ public class ProductServiceController {
     @Autowired
     private ProductsRepository repo;
 
-    // Metodo GET - getAll()
+    // Método GET - getAll()
     //@RequestMapping(value = "", method = RequestMethod.GET)
     //@RequestMapping(value = "", method = {RequestMethod.GET,RequestMethod.DELETE}) // No es correcto.
     /*@GetMapping("")

@@ -25,6 +25,8 @@ logging:
     org.hibernate: ERROR
 
 ---
+# Acceso BB.DD. H2 dev --> http://localhost:9090/h2-console
+# Acceso BB.DD. H2 prod--> http://localhost:4431/h2-console
 spring:
   profiles: dev
   application:
