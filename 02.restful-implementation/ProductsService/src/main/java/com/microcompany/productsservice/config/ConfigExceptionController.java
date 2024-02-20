@@ -1,6 +1,6 @@
 package com.microcompany.productsservice.config;
 
-import com.microcompany.productsservice.exception.ProductNotfoundException;
+import com.microcompany.productsservice.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,14 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 //@ControllerAdvice
-@RestControllerAdvice
+@RestControllerAdvice // Maneja las excepciones globalmente
 public class ConfigExceptionController {
-    /*ExceptionHandler(value = ProductNotfoundException.class)
-    public ResponseEntity<Object> exception(ProductNotfoundException exception) {
+    /*ExceptionHandler(value = ProductNotFoundException.class)
+    public ResponseEntity<Object> exception(ProductNotFoundException exception) {
         return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
     }*/
-    @ExceptionHandler(value = ProductNotfoundException.class)
-    public ResponseEntity<Object> handleProductNotfoundException(ProductNotfoundException exception) {
+    @ExceptionHandler(value = ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductNotfoundException(ProductNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 

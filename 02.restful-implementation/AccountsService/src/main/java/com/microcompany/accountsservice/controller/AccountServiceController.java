@@ -1,8 +1,7 @@
 package com.microcompany.accountsservice.controller;
 
-import com.microcompany.accountsservice.exception.AccountNotfoundException;
+import com.microcompany.accountsservice.exception.AccountNotFoundException;
 import com.microcompany.accountsservice.model.Account;
-import com.microcompany.accountsservice.payload.ApiResponse;
 import com.microcompany.accountsservice.payload.MoneyForOwner;
 import com.microcompany.accountsservice.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class AccountServiceController {
     public ResponseEntity getAccount() {
         List<Account> accs = accountService.getAccounts();
         if (accs != null && accs.size() > 0) return ResponseEntity.status(HttpStatus.OK).body(accs);
-        else throw new AccountNotfoundException("Lista vacía");
+        else throw new AccountNotFoundException("Lista vacía");
     }
 
     @PostMapping("")
@@ -45,7 +44,7 @@ public class AccountServiceController {
     ) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id));
-        } catch (AccountNotfoundException e) {
+        } catch (AccountNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -54,7 +53,7 @@ public class AccountServiceController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Account> updateAccount(
-            @RequestBody Account account,
+            @RequestBody Account account, // Define el tipo de contenido del cuerpo de la solicitud.
             @PathVariable @Min(1) Long id
     ) {
         account.setId(id);

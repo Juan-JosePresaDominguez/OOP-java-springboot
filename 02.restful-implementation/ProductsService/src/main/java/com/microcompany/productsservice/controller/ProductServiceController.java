@@ -1,6 +1,5 @@
 package com.microcompany.productsservice.controller;
 
-import com.microcompany.productsservice.exception.ProductNotfoundException;
 import com.microcompany.productsservice.model.Product;
 import com.microcompany.productsservice.model.StatusMessage;
 import com.microcompany.productsservice.persistence.ProductsRepository;
@@ -43,9 +42,18 @@ public class ProductServiceController {
         return repo.findAll();
     }*/
 
+    // Método GET - getAll() - NO HAPPY PATH - Excepción lanzada desde Controller
+    /*@GetMapping("")
+    public ResponseEntity<List<Product>> getAll() {
+        List<Product> products = repo.findAll();
+        if (products != null && products.size() > 0) return new ResponseEntity<>(repo.findAll(), HttpStatus.OK); // HTTP 200
+        //else return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        else throw new ProductNotFoundException("La lista de productos está vacía"); // HTTP 404
+    }*/
+    // Método GET - getAll() - NO HAPPY PATH - Excepción lanzada desde Servicio
     @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<Product>> getAll() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAll(), HttpStatus.OK); // HTTP 200/404
     }
 
     /*@RequestMapping(value = "", method = RequestMethod.POST)

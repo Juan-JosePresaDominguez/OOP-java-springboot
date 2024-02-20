@@ -53,7 +53,7 @@ public class ProductServiceController {
         List<Product> products = repo.findAll();
         if (products != null && products.size() > 0) return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
         //else return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        else throw new ProductNotfoundException("La lista de productos está vacía");
+        else throw new ProductNotFoundException("La lista de productos está vacía");
     }*/
 
     // Método GET - getAll() - NO HAPPY PATH - Excepción lanzada desde Servicio

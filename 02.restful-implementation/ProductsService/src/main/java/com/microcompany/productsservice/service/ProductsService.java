@@ -1,11 +1,9 @@
 package com.microcompany.productsservice.service;
 
-import com.microcompany.productsservice.exception.ProductNotfoundException;
+import com.microcompany.productsservice.exception.ProductNotFoundException;
 import com.microcompany.productsservice.model.Product;
 import com.microcompany.productsservice.persistence.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -28,7 +26,7 @@ public class ProductsService {
     public List<Product> getAll(){
         List<Product> products = productsRepository.findAll();
         if (products != null && products.size() > 0) return products;
-        else throw new ProductNotfoundException("La lista de productos está vacía");
+        else throw new ProductNotFoundException("La lista de productos está vacía");
     }
 
     public Product duplicate(Long id) {

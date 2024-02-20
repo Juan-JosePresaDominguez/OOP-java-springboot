@@ -1,6 +1,5 @@
 package com.microcompany.accountsservice.config;
 
-import com.microcompany.accountsservice.exception.AccountNotfoundException;
 import com.microcompany.accountsservice.exception.GlobalException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ public class ConfigExceptionController {
         return new ResponseEntity<>("Global: "+exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    /*@ExceptionHandler(value = AccountNotfoundException.class)
-    public ResponseEntity<Object> handleAccountNotfoundException(AccountNotfoundException exception) {
+    /*@ExceptionHandler(value = AccountNotFoundException.class)
+    public ResponseEntity<Object> handleAccountNotfoundException(AccountNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }*/
 

@@ -1,6 +1,6 @@
 package com.microcompany.accountsservice.services;
 
-import com.microcompany.accountsservice.exception.AccountNotfoundException;
+import com.microcompany.accountsservice.exception.AccountNotFoundException;
 import com.microcompany.accountsservice.model.Account;
 import com.microcompany.accountsservice.model.Customer;
 import com.microcompany.accountsservice.persistence.AccountRepository;
@@ -33,7 +33,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account getAccount(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
+        Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         Customer owner = null; // Will be gotten from user service
         account.setOwner(owner);
         return account;
@@ -46,7 +46,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account updateAccount(Long id, Account account) {
-        Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
+        Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         newAccount.setType(account.getType());
         newAccount.setBalance(account.getBalance());
         return accountRepository.save(newAccount);
@@ -54,7 +54,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account addBalance(Long id, int amount, Long ownerId) {
-        Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
+        Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         Customer owner = null;// Will be gotten from user service (Se obtendrá del servicio de usuario)
         int newBalance = newAccount.getBalance() + amount;
         newAccount.setBalance(newBalance);
@@ -63,7 +63,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account withdrawBalance(Long id, int amount, Long ownerId) {
-        Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
+        Account newAccount = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         Customer owner = null; // Will be gotten from user service (Se obtendrá del servicio de usuario)
         int newBalance = newAccount.getBalance() - amount;
         newAccount.setBalance(newBalance);
@@ -72,7 +72,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public void delete(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotfoundException(id));
+        Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         this.accountRepository.delete(account);
     }
 

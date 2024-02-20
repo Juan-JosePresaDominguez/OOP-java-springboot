@@ -60,6 +60,7 @@ spring:
 
 server:
   servlet.contextPath: /api/v1
+  # Configurar HTTPS
   port: 8443
   ssl:
       key-store: keystore.p12
