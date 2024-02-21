@@ -1,11 +1,11 @@
 spring:
   application.name: AccountsService
-  profiles.active: dev
-  #profiles.active: prod
+  #profiles.active: dev
+  profiles.active: prod
   # Cargar múltiples data.sql en Spring Boot ------------------
 #  sql:
 #    init:
-#      #data-locations: import_H2_data.sql,import_MySQL_data.sql
+#      #data-locations: import_H2_data.sql,MySQL_data.sql
 #      data-locations:
 #        classpath: import_*_data.sql
 

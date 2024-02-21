@@ -131,6 +131,14 @@ public class AccountServiceController {
     ) {
         this.accountService.deleteAccountsUsingOwnerId(ownerId);
         return ResponseEntity.noContent().build();
+    }
 
+    // Método DELETE (Borrar Todas las Cuentas 'deleteAll' - SERVICIO)
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    //@DeleteMapping(value = "")
+    public ResponseEntity deleteAll() {
+        accountService.deleteAll(); // HTTP 204 No Content
+        //repo.deleteAll(); // HTTP 204 No Content
+        return ResponseEntity.noContent().build();
     }
 }
