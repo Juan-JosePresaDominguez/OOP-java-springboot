@@ -1,5 +1,6 @@
 package com.microcompany.productsservice.controller;
 
+import com.microcompany.productsservice.exception.ProductNotFoundException;
 import com.microcompany.productsservice.model.Product;
 import com.microcompany.productsservice.model.StatusMessage;
 import com.microcompany.productsservice.persistence.ProductsRepository;
@@ -52,8 +53,10 @@ public class ProductServiceController {
     }*/
     // Método GET - getAll() - NO HAPPY PATH - Excepción lanzada desde Servicio
     @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<Product>> getAll() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK); // HTTP 200/404
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = repo.findAll();
+        if (products != null && !products.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(products);
+        else throw new ProductNotFoundException("No hay productos");
     }
 
     /*@RequestMapping(value = "", method = RequestMethod.POST)
@@ -68,6 +71,23 @@ public class ProductServiceController {
         logger.info("newProduct:" + newProduct);
         newProduct.setId(null);
         return new ResponseEntity<>(repo.save(newProduct), HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Add a new product", description = "Returns a persisted product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Successfully created"),
+            @ApiResponse(responseCode = "4XX", description = "Bad request")
+    })
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createProduct(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Product data")
+            @RequestBody @Valid Product newProduct
+    ) {
+        newProduct.setId(null);
+        repo.save(newProduct);
+        if (newProduct != null && newProduct.getId() > 0) return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>(new StatusMessage(HttpStatus.BAD_REQUEST.value(), "No encontrado"), HttpStatus.BAD_REQUEST);
     }
 
     @Operation(summary = "Get a product by id", description = "Returns a product as per the id")
