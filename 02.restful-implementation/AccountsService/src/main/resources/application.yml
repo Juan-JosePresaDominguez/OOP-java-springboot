@@ -1,7 +1,7 @@
 spring:
   application.name: AccountsService
-  #profiles.active: dev
-  profiles.active: prod
+  profiles.active: dev
+  #profiles.active: prod
   # Cargar múltiples data.sql en Spring Boot ------------------
 #  sql:
 #    init:
@@ -13,7 +13,7 @@ server:
   servlet.contextPath: /api
 
 ---
-# Acceso BB.DD. H2 dev --> http://localhost:9900/h2-ui
+# Acceso BB.DD. H2 dev --> http://localhost:9900/api/h2-ui
 spring:
   config.activate.on-profile: dev
   sql.init.mode: always
@@ -37,7 +37,7 @@ spring:
 server.port: 9900
 
 ---
-# Acceso BB.DD. MySQL prod--> http://localhost:9943
+# Acceso BB.DD. MySQL prod--> http://localhost:9943/api
 spring:
   config.activate.on-profile: prod
   sql.init.mode: always

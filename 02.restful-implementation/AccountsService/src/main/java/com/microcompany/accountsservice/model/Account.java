@@ -27,7 +27,7 @@ public class Account {
 
     //@Column(name = "tipo") // Ahorro o corriente
     @NotBlank
-    @Size(min = 3, max = 10)
+    @Size(min = 3, max = 20)
     //@Pattern(regexp = "")
     private String type;
 

@@ -24,7 +24,7 @@ public class AccountServiceController {
 
 
     @GetMapping("")
-    public ResponseEntity getAccount() {
+    public ResponseEntity getAccounts() {
         List<Account> accs = accountService.getAccounts();
         if (accs != null && accs.size() > 0) return ResponseEntity.status(HttpStatus.OK).body(accs);
         else throw new AccountNotFoundException("Lista vacía");
@@ -47,6 +47,7 @@ public class AccountServiceController {
         } catch (AccountNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        /* En este caso, a diferencia del método del controller 'getAccounts()' que controla la excepción, el método 'getAccount' controla la excepción en el servicio 'AccountService -> gatAccount()'. Es la forma más correcta de implementarlo para evitar el anidamiento de if-else. */
     }
 
     // update account
@@ -87,6 +88,7 @@ public class AccountServiceController {
     ) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(accountService.withdrawBalance(id, amount, ownerId));
     }*/
+    // Mediante un objeto auxiliar "MoneyForOwner" para comunicar información. En este caso encapsula 2 campos: amount y ownerId. Similar a StatusMessages del ProjectsService.
     @PutMapping("/withdraw/{id}")
     public ResponseEntity<Account> withdraw(
             @PathVariable @Min(1) Long id,

@@ -33,6 +33,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account getAccount(Long id) {
+        /* La excepción de cliente no encontrado se controla aquí, no en el método getAccount() de la API */
         Account account = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
         Customer owner = null; // Will be gotten from user service
         account.setOwner(owner);

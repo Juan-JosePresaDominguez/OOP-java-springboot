@@ -31,7 +31,7 @@ public class ProductsService {
 
     public Product duplicate(Long id) {
         Product currProd = productsRepository.findById(id).get();
-        em.detach(currProd);
+        em.detach(currProd); // Desligar del contexto de persistencia.
 //        Product newProduct = new Product(null, currProd.getName(), currProd.getSerial());
         currProd.setId(null);
         return productsRepository.save(currProd);
